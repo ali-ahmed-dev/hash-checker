@@ -1,8 +1,16 @@
 from pathlib import Path
 import hashlib
 
-def calculate_hash(filename):
-    hash_obj = hashlib.sha256()
+SUPPORTED_ALGORITHMS = {
+    "1": "md5",
+    "2": "sha1",
+    "3": "sha256",
+    "4": "sha512",
+}
+
+
+def calculate_hash(filename, algorithm):
+    hash_obj = hashlib.new(algorithm)
     with open(filename, "rb") as file:
         for chunk in iter(lambda: file.read(4096), b""):
             hash_obj.update(chunk)
@@ -18,9 +26,13 @@ def main():
 
     try:
         filename = Path(input("Enter the file path: "))
-        file_hash = calculate_hash(filename)
-        print("SHA-256 Hash:")
-        print(file_hash)
+        print("Choose hash algorithm \n1.MD5\n2.SHA1\n3.SHA256\n4.SHA512):")
+        algorithm_num = input("choose an option (1-4):")
+        algorithm = SUPPORTED_ALGORITHMS[algorithm_num]
+        file_hash = calculate_hash(filename, algorithm)
+        print(" Hash:", file_hash)
+    except KeyError:
+        print("Error: Invalid algorithm selection")
     except FileNotFoundError:
         print("Status: File not found.")
 
