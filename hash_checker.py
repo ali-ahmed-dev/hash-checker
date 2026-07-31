@@ -9,9 +9,9 @@ SUPPORTED_ALGORITHMS = {
 }
 
 
-def calculate_hash(filename, algorithm):
+def calculate_hash(file_path, algorithm):
     hash_obj = hashlib.new(algorithm)
-    with open(filename, "rb") as file:
+    with open(file_path, "rb") as file:
         for chunk in iter(lambda: file.read(4096), b""):
             hash_obj.update(chunk)
     return hash_obj.hexdigest()
@@ -25,16 +25,28 @@ def main():
     print("Welcome to the Hash Checker Tool")
 
     try:
-        filename = Path(input("Enter the file path: "))
-        print("Choose hash algorithm \n1.MD5\n2.SHA1\n3.SHA256\n4.SHA512):")
+        user_input = input("Enter the file path: ").strip()
+        if not user_input:
+            print("Status: No file path provided.")
+            return
+        file_path = Path(user_input)
+        print("Choose hash algorithm \n1.MD5\n2.SHA1\n3.SHA256\n4.SHA512\n")
         algorithm_num = input("choose an option (1-4):")
         algorithm = SUPPORTED_ALGORITHMS[algorithm_num]
-        file_hash = calculate_hash(filename, algorithm)
+        file_hash = calculate_hash(file_path, algorithm)
         print(" Hash:", file_hash)
     except KeyError:
-        print("Error: Invalid algorithm selection")
+        print("Error: Invalid algorithm selection.")
     except FileNotFoundError:
         print("Status: File not found.")
+    except IsADirectoryError:
+        print("Error: The specified path is a directory.")
+
+    except PermissionError:
+        print("Error: Permission denied while accessing the file.")
+
+    except Exception as e:
+        print(f"Unexpected error: {e}")
 
 
 if __name__ == "__main__":
