@@ -17,6 +17,10 @@ def calculate_hash(file_path, algorithm):
     return hash_obj.hexdigest()
 
 
+def compare_hashes(expected_hash, calculated_hash):
+    return expected_hash.lower() == calculated_hash.lower()
+
+
 def generate_report():
     pass
 
@@ -33,8 +37,16 @@ def main():
         print("Choose hash algorithm \n1.MD5\n2.SHA1\n3.SHA256\n4.SHA512\n")
         algorithm_num = input("choose an option (1-4):")
         algorithm = SUPPORTED_ALGORITHMS[algorithm_num]
-        file_hash = calculate_hash(file_path, algorithm)
-        print(" Hash:", file_hash)
+        calculated_hash = calculate_hash(file_path, algorithm)
+        expected_hash = input("Enter the hash to compare: ").strip()
+        if not expected_hash:
+            print("Status: No hash provided for comparison.")
+            return
+        if compare_hashes(expected_hash, calculated_hash):
+            print("Status: Hashes Match ✅")
+        else:
+            print("Status: Hashes Mismatch ❌")
+
     except KeyError:
         print("Error: Invalid algorithm selection.")
     except FileNotFoundError:
