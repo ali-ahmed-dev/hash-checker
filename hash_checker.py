@@ -8,6 +8,7 @@ SUPPORTED_ALGORITHMS = {
     "3": "sha256",
     "4": "sha512",
 }
+REPORT_FILENAME = "hash_checker_report.txt"
 
 HEADER = f"{SEPARATOR}\n                 HASH CHECKER \n{SEPARATOR}"
 FOOTER = f"{SEPARATOR}\n                 END OF REPORT\n{SEPARATOR}"
@@ -38,6 +39,11 @@ def build_report(file_name, algorithm, calculated_hash, expected_hash, status):
     return "\n".join(report_lines)
 
 
+def export_report(report_lines):
+    with open(REPORT_FILENAME, "w", encoding="utf-8") as file:
+        file.write(report_lines)
+
+
 def main():
     print("Welcome to the Hash Checker Tool")
 
@@ -59,7 +65,7 @@ def main():
 
         report_lines = build_report(file_path.name, algorithm, calculated_hash, expected_hash, status)
         print(report_lines)
-
+        export_report(report_lines)
     except KeyError:
         print("Error: Invalid algorithm selection.")
     except FileNotFoundError:
