@@ -1,6 +1,6 @@
 from pathlib import Path
 import hashlib
-
+import json
 SEPARATOR = "=" * 50
 SUPPORTED_ALGORITHMS = {
     "1": "md5",
@@ -44,6 +44,19 @@ def export_report(report_lines):
         file.write(report_lines)
 
 
+def export_report_json(file_name, algorithm, calculated_hash, expected_hash, status):
+    report_dict = {
+        "file_name": file_name,
+        "algorithm": algorithm.upper(),
+        "calculated_hash": calculated_hash,
+        "expected_hash": expected_hash,
+        "status": status
+    }
+    json_filename = f"{Path(file_name).stem}_report.json"
+    with open(json_filename, "w", encoding="utf-8") as file:
+        json.dump(report_dict, file, indent=4, ensure_ascii=False)
+
+
 def main():
     print("Welcome to the Hash Checker Tool")
 
@@ -66,6 +79,7 @@ def main():
         report_lines = build_report(file_path.name, algorithm, calculated_hash, expected_hash, status)
         print(report_lines)
         export_report(report_lines)
+        export_report_json(file_path.name, algorithm, calculated_hash, expected_hash, status)
     except KeyError:
         print("Error: Invalid algorithm selection.")
     except FileNotFoundError:
