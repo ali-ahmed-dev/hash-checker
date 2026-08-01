@@ -1,12 +1,16 @@
 from pathlib import Path
 import hashlib
 
+SEPARATOR = "=" * 50
 SUPPORTED_ALGORITHMS = {
     "1": "md5",
     "2": "sha1",
     "3": "sha256",
     "4": "sha512",
 }
+
+HEADER = f"{SEPARATOR}\n                 HASH CHECKER \n{SEPARATOR}"
+FOOTER = f"{SEPARATOR}\n                 END OF REPORT\n{SEPARATOR}"
 
 
 def calculate_hash(file_path, algorithm):
@@ -21,8 +25,17 @@ def compare_hashes(expected_hash, calculated_hash):
     return expected_hash.lower() == calculated_hash.lower()
 
 
-def generate_report():
-    pass
+def build_report(file_name, algorithm, calculated_hash, expected_hash, status):
+    report_lines = [
+        HEADER,
+        f"File Name   : {file_name}",
+        f"Algorithm   : {algorithm.upper()}",
+        f"Calculated  : {calculated_hash}",
+        f"Expected    : {expected_hash}",
+        f"Status      : {status}",
+        FOOTER
+    ]
+    return "\n".join(report_lines)
 
 
 def main():
@@ -42,10 +55,10 @@ def main():
         if not expected_hash:
             print("Status: No hash provided for comparison.")
             return
-        if compare_hashes(expected_hash, calculated_hash):
-            print("Status: Hashes Match ✅")
-        else:
-            print("Status: Hashes Mismatch ❌")
+        status = "Hashes Match" if compare_hashes(expected_hash, calculated_hash) else "Hashes Mismatch"
+
+        report_lines = build_report(file_path.name, algorithm, calculated_hash, expected_hash, status)
+        print(report_lines)
 
     except KeyError:
         print("Error: Invalid algorithm selection.")
