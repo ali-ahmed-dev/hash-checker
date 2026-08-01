@@ -1,9 +1,13 @@
+from datetime import datetime
 from pathlib import Path
 import hashlib
 import json
-from datetime import datetime
+
 
 SEPARATOR = "=" * 50
+HEADER = f"{SEPARATOR}\n                 HASH CHECKER \n{SEPARATOR}"
+FOOTER = f"{SEPARATOR}\n                 END OF REPORT\n{SEPARATOR}"
+
 SUPPORTED_ALGORITHMS = {
     "1": "md5",
     "2": "sha1",
@@ -11,9 +15,6 @@ SUPPORTED_ALGORITHMS = {
     "4": "sha512",
 }
 REPORT_FILENAME = "hash_checker_report.txt"
-
-HEADER = f"{SEPARATOR}\n                 HASH CHECKER \n{SEPARATOR}"
-FOOTER = f"{SEPARATOR}\n                 END OF REPORT\n{SEPARATOR}"
 
 
 def calculate_hash(file_path, algorithm):
@@ -24,36 +25,36 @@ def calculate_hash(file_path, algorithm):
     return hash_obj.hexdigest()
 
 
-def compare_hashes(expected_hash, calculated_hash):
-    return expected_hash.lower() == calculated_hash.lower()
+def compare_hashes(expected, calculated):
+    return expected.lower() == calculated.lower()
 
 
-def build_report(file_name, algorithm, calculated_hash, expected_hash, status, generated_at):
-    report_lines = [
+def build_report(file_name, algorithm, calculated, expected, status, generated_at):
+    report = [
         HEADER,
         f"Generated   : {generated_at}",
         f"File Name   : {file_name}",
         f"Algorithm   : {algorithm.upper()}",
-        f"Calculated  : {calculated_hash}",
-        f"Expected    : {expected_hash}",
         f"Status      : {status}",
+        f"Calculated  : {calculated}",
+        f"Expected    : {expected}",
         FOOTER
     ]
-    return "\n".join(report_lines)
+    return "\n".join(report)
 
 
-def export_report(report_lines):
+def export_report_txt(report):
     with open(REPORT_FILENAME, "w", encoding="utf-8") as file:
-        file.write(report_lines)
+        file.write(report)
 
 
-def export_report_json(file_name, algorithm, calculated_hash, expected_hash, status, generated_at):
+def export_report_json(file_name, algorithm, calculated, expected, status, generated_at):
     report_dict = {
-        "generated": generated_at,
+        "generated_at": generated_at,
         "file_name": file_name,
         "algorithm": algorithm.upper(),
-        "calculated_hash": calculated_hash,
-        "expected_hash": expected_hash,
+        "calculated_hash": calculated,
+        "expected_hash": expected,
         "status": status
     }
     json_filename = f"{Path(file_name).stem}_report.json"
@@ -73,17 +74,17 @@ def main():
         print("Choose hash algorithm \n1.MD5\n2.SHA1\n3.SHA256\n4.SHA512\n")
         algorithm_num = input("choose an option (1-4):")
         algorithm = SUPPORTED_ALGORITHMS[algorithm_num]
-        calculated_hash = calculate_hash(file_path, algorithm)
-        expected_hash = input("Enter the hash to compare: ").strip()
-        if not expected_hash:
+        calculated = calculate_hash(file_path, algorithm)
+        expected = input("Enter the hash to compare: ").strip()
+        if not expected:
             print("Status: No hash provided for comparison.")
             return
-        status = "Hashes Match" if compare_hashes(expected_hash, calculated_hash) else "Hashes Mismatch"
+        status = "Hashes Match" if compare_hashes(expected, calculated) else "Hashes Mismatch"
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        report_lines = build_report(file_path.name, algorithm, calculated_hash, expected_hash, status, generated_at)
-        print(report_lines)
-        export_report(report_lines)
-        export_report_json(file_path.name, algorithm, calculated_hash, expected_hash, status, generated_at)
+        report = build_report(file_path.name, algorithm, calculated, expected, status, generated_at)
+        print(report)
+        export_report_txt(report)
+        export_report_json(file_path.name, algorithm, calculated, expected, status, generated_at)
     except KeyError:
         print("Error: Invalid algorithm selection.")
     except FileNotFoundError:
