@@ -14,7 +14,6 @@ SUPPORTED_ALGORITHMS = {
     "3": "sha256",
     "4": "sha512",
 }
-REPORT_FILENAME = "hash_checker_report.txt"
 
 
 def calculate_hash(file_path, algorithm):
@@ -43,8 +42,9 @@ def build_report(file_name, algorithm, calculated, expected, status, generated_a
     return "\n".join(report)
 
 
-def export_report_txt(report):
-    with open(REPORT_FILENAME, "w", encoding="utf-8") as file:
+def export_report_txt(report, file_name):
+    txt_filename = f"{Path(file_name).stem}_report.txt"
+    with open(txt_filename, "w", encoding="utf-8") as file:
         file.write(report)
 
 
@@ -83,7 +83,7 @@ def main():
         generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         report = build_report(file_path.name, algorithm, calculated, expected, status, generated_at)
         print(report)
-        export_report_txt(report)
+        export_report_txt(report, file_path.name)
         export_report_json(file_path.name, algorithm, calculated, expected, status, generated_at)
     except KeyError:
         print("Error: Invalid algorithm selection.")
