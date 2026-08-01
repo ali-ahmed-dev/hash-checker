@@ -1,6 +1,8 @@
 from pathlib import Path
 import hashlib
 import json
+from datetime import datetime
+
 SEPARATOR = "=" * 50
 SUPPORTED_ALGORITHMS = {
     "1": "md5",
@@ -26,9 +28,10 @@ def compare_hashes(expected_hash, calculated_hash):
     return expected_hash.lower() == calculated_hash.lower()
 
 
-def build_report(file_name, algorithm, calculated_hash, expected_hash, status):
+def build_report(file_name, algorithm, calculated_hash, expected_hash, status, generated_at):
     report_lines = [
         HEADER,
+        f"Generated   : {generated_at}",
         f"File Name   : {file_name}",
         f"Algorithm   : {algorithm.upper()}",
         f"Calculated  : {calculated_hash}",
@@ -44,8 +47,9 @@ def export_report(report_lines):
         file.write(report_lines)
 
 
-def export_report_json(file_name, algorithm, calculated_hash, expected_hash, status):
+def export_report_json(file_name, algorithm, calculated_hash, expected_hash, status, generated_at):
     report_dict = {
+        "generated": generated_at,
         "file_name": file_name,
         "algorithm": algorithm.upper(),
         "calculated_hash": calculated_hash,
@@ -75,11 +79,11 @@ def main():
             print("Status: No hash provided for comparison.")
             return
         status = "Hashes Match" if compare_hashes(expected_hash, calculated_hash) else "Hashes Mismatch"
-
-        report_lines = build_report(file_path.name, algorithm, calculated_hash, expected_hash, status)
+        generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        report_lines = build_report(file_path.name, algorithm, calculated_hash, expected_hash, status, generated_at)
         print(report_lines)
         export_report(report_lines)
-        export_report_json(file_path.name, algorithm, calculated_hash, expected_hash, status)
+        export_report_json(file_path.name, algorithm, calculated_hash, expected_hash, status, generated_at)
     except KeyError:
         print("Error: Invalid algorithm selection.")
     except FileNotFoundError:
