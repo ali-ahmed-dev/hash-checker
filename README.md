@@ -109,6 +109,7 @@ hash-checker/
 * Verify hashes from batch hash list files.
 * Add colorized terminal output.
 * Export reports in CSV format.
+* Input validation: automatically trims hash inputs and validates file paths before processing.
 
 ---
 
@@ -120,7 +121,7 @@ This project is licensed under the MIT License.
 
 ## Version
 
-**v1.0.1**
+**v1.0.2**
 
 ---
 

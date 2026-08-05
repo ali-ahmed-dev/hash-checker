@@ -25,7 +25,7 @@ def calculate_hash(file_path, algorithm):
 
 
 def compare_hashes(expected, calculated):
-    return expected.lower() == calculated.lower()
+    return expected.strip().lower() == calculated.lower()
 
 
 def build_report(file_name, algorithm, calculated, expected, status, generated_at):
@@ -70,7 +70,16 @@ def main():
         if not user_input:
             print("Status: No file path provided.")
             return
+
         file_path = Path(user_input)
+        if not file_path.exists():
+            print(f"Error: file '{file_path}' not found.")
+            return
+
+        if not file_path.is_file():
+            print(f"Error: '{file_path}' is a directory, not a file.")
+            return
+
         print("Choose hash algorithm \n1.MD5\n2.SHA1\n3.SHA256\n4.SHA512\n")
         algorithm_num = input("choose an option (1-4):").strip()
         if algorithm_num not in SUPPORTED_ALGORITHMS:
@@ -90,10 +99,6 @@ def main():
         export_report_json(file_path.name, algorithm, calculated, expected, status, generated_at)
     except KeyError:
         print("Error: Invalid algorithm selection.")
-    except FileNotFoundError:
-        print("Status: File not found.")
-    except IsADirectoryError:
-        print("Error: The specified path is a directory.")
 
     except PermissionError:
         print("Error: Permission denied while accessing the file.")
