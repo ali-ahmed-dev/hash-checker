@@ -72,7 +72,10 @@ def main():
             return
         file_path = Path(user_input)
         print("Choose hash algorithm \n1.MD5\n2.SHA1\n3.SHA256\n4.SHA512\n")
-        algorithm_num = input("choose an option (1-4):")
+        algorithm_num = input("choose an option (1-4):").strip()
+        if algorithm_num not in SUPPORTED_ALGORITHMS:
+            print("Error: Invalid algorithm selection.")
+            return
         algorithm = SUPPORTED_ALGORITHMS[algorithm_num]
         calculated = calculate_hash(file_path, algorithm)
         expected = input("Enter the hash to compare: ").strip()
