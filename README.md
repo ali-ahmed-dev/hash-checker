@@ -121,7 +121,7 @@ This project is licensed under the MIT License.
 
 ## Version
 
-**v1.0.3**
+**v1.0.4**
 
 ---
 

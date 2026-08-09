@@ -101,10 +101,13 @@ def main():
         export_report_txt(report, file_path.name)
         export_report_json(file_path.name, algorithm, calculated, expected, status, generated_at)
     except KeyError:
-        print("Error: Invalid algorithm selection.")
+        print("Error: Invalid algorithm selection. Please choose a number between 1 and 4.")
 
     except PermissionError:
-        print("Error: Permission denied while accessing the file.")
+        print(f"Error: Permission denied. You do not have read access to '{file_path}'.")
+
+    except OSError as e:
+        print(f"Error: An operating system error occurred. Details: {e}")
 
     except Exception as e:
         print(f"Unexpected error: {e}")
