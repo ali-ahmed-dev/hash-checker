@@ -44,6 +44,8 @@ def build_report(file_name, algorithm, calculated, expected, status, generated_a
 
 def export_report_txt(report, file_name):
     txt_filename = f"{Path(file_name).stem}_report.txt"
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    txt_filename = f"{Path(file_name).stem}_report_{timestamp}.txt"
     with open(txt_filename, "w", encoding="utf-8") as file:
         file.write(report)
 
@@ -57,7 +59,8 @@ def export_report_json(file_name, algorithm, calculated, expected, status, gener
         "expected_hash": expected,
         "status": status
     }
-    json_filename = f"{Path(file_name).stem}_report.json"
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    json_filename = f"{Path(file_name).stem}_report_{timestamp}.json"
     with open(json_filename, "w", encoding="utf-8") as file:
         json.dump(report_dict, file, indent=4, ensure_ascii=False)
 
