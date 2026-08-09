@@ -110,6 +110,7 @@ hash-checker/
 * Add colorized terminal output.
 * Export reports in CSV format.
 * Input validation: automatically trims hash inputs and validates file paths before processing.
+* Configurable chunk size for performance tuning.
 
 ---
 
@@ -121,7 +122,7 @@ This project is licensed under the MIT License.
 
 ## Version
 
-**v1.0.4**
+**v1.1.0**
 
 ---
 

@@ -11,7 +11,7 @@ These improvements focus on accuracy, reliability, and maintainability.
 
 * [✓] Improve input validation for user-provided file paths and hash values.
 * [✓] Expand exception handling with more specific error messages where appropriate.
-* [ ] Make the file chunk size configurable for easier performance tuning.
+* [✓] Make the file chunk size configurable for easier performance tuning.
 * [✓] Add timestamp-based report filenames to prevent overwriting previous reports.
 
 ---
@@ -53,8 +53,8 @@ Larger features planned for future major versions.
 
 | Version                  | Status     |
 | ------------------------ | ---------- |
-| **Current Release**      | **v1.0.4** |
-| **Next Planned Release** | **v1.1.0** |
+| **Current Release**      | **v1.1.0** |
+| **Next Planned Release** | **v1.2.0** |
 
 ---
 

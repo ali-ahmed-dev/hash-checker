@@ -3,6 +3,8 @@ from pathlib import Path
 import hashlib
 import json
 
+# Configuration
+CHUNK_SIZE = 4096  # Default chunk size for reading files (adjust for performance)
 
 SEPARATOR = "=" * 50
 HEADER = f"{SEPARATOR}\n                 HASH CHECKER \n{SEPARATOR}"
@@ -19,7 +21,7 @@ SUPPORTED_ALGORITHMS = {
 def calculate_hash(file_path, algorithm):
     hash_obj = hashlib.new(algorithm)
     with open(file_path, "rb") as file:
-        for chunk in iter(lambda: file.read(4096), b""):
+        for chunk in iter(lambda: file.read(CHUNK_SIZE), b""):
             hash_obj.update(chunk)
     return hash_obj.hexdigest()
 
