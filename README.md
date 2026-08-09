@@ -17,6 +17,7 @@ A Python command-line tool that calculates and verifies file hashes using multip
 * Generate a formatted verification report.
 * Export reports as **TXT** files.
 * Export reports as **JSON** files named after the target file.
+* Configurable chunk size for performance tuning.
 
 ---
 
@@ -110,7 +111,6 @@ hash-checker/
 * Add colorized terminal output.
 * Export reports in CSV format.
 * Input validation: automatically trims hash inputs and validates file paths before processing.
-* Configurable chunk size for performance tuning.
 
 ---
 
