@@ -28,6 +28,7 @@ A Python command-line tool that calculates and verifies file hashes using multip
 * `pathlib`
 * `datetime`
 * `json`
+* `typing`
 
 ---
 
@@ -122,7 +123,7 @@ This project is licensed under the MIT License.
 
 ## Version
 
-**v1.1.0**
+**v1.1.1**
 
 ---
 
