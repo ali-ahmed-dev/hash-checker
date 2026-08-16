@@ -20,7 +20,7 @@ These improvements focus on accuracy, reliability, and maintainability.
 
 These features will improve flexibility and usability.
 
-* [ ] Add command-line argument support using `argparse`.
+* [✓] Add command-line argument support using `argparse`.
 * [ ] Support batch verification of multiple files.
 * [ ] Improve report metadata with additional verification details.
 * [ ] Allow users to choose custom output locations for generated reports.
@@ -53,8 +53,8 @@ Larger features planned for future major versions.
 
 | Version                  | Status     |
 | ------------------------ | ---------- |
-| **Current Release**      | **v1.1.1** |
-| **Next Planned Release** | **v1.2.0** |
+| **Current Release**      | **v1.2.0** |
+| **Next Planned Release** | **v1.3.0** |
 
 ---
 

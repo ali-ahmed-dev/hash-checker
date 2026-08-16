@@ -2,12 +2,12 @@
 Hash Checker - A tool for calculating and verifying file hashes.
 """
 
-
 from datetime import datetime
-from typing import Optional
 from pathlib import Path
+import argparse
 import hashlib
 import json
+
 
 # ===================== CONSTANTS =====================
 CHUNK_SIZE = 4096  # Default chunk size for reading files (adjust for performance)
@@ -16,12 +16,7 @@ SEPARATOR = "=" * 50
 HEADER = f"{SEPARATOR}\n                 HASH CHECKER \n{SEPARATOR}"
 FOOTER = f"{SEPARATOR}\n                 END OF REPORT\n{SEPARATOR}"
 
-SUPPORTED_ALGORITHMS = {
-    "1": "md5",
-    "2": "sha1",
-    "3": "sha256",
-    "4": "sha512",
-}
+SUPPORTED_ALGORITHMS = ["md5", "sha1", "sha256", "sha512"]
 
 
 # ===================== CORE FUNCTIONS =====================
@@ -99,18 +94,29 @@ def get_timestamp() -> str:
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
-def export_report_txt(report: str, file_name: str) -> None:
+def export_report_txt(report: str, file_name: str, output_dir: Path = None) -> None:
     """
     Export the report to a timestamped TXT file.
 
     Args:
         report (str): Report text to export.
         file_name (str): Original file name for naming the report.
+        output_dir (Path, optional): Directory to save the report.
     """
+    if output_dir is None:
+        output_dir = Path.cwd()
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     timestamp = get_timestamp()
     txt_filename = f"{Path(file_name).stem}_report_{timestamp}.txt"
-    Path(txt_filename).write_text(report, encoding="utf-8")
-    print(f"Report exported to {txt_filename}")
+    report_path = output_dir / txt_filename
+
+    try:
+        report_path.write_text(report, encoding="utf-8")
+        print(f"Report exported to {report_path}")
+    except (PermissionError, OSError) as e:
+        print(f"Error: Could not write TXT report to {report_path}. {e}")
 
 
 def export_report_json(
@@ -119,7 +125,8 @@ def export_report_json(
     calculated: str,
     expected: str,
     status: str,
-    generated_at: str
+    generated_at: str,
+    output_dir: Path = None
 ) -> None:
     """
     Export report data to a timestamped JSON file.
@@ -131,9 +138,16 @@ def export_report_json(
         expected (str): Expected hash.
         status (str): Comparison status.
         generated_at (str): Timestamp of report generation.
+        output_dir (Path, optional): Directory to save the report.
     """
+    if output_dir is None:
+        output_dir = Path.cwd()
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     timestamp = get_timestamp()
     json_filename = f"{Path(file_name).stem}_report_{timestamp}.json"
+    report_path = output_dir / json_filename
 
     report_data = {
         "generated_at": generated_at,
@@ -144,62 +158,144 @@ def export_report_json(
         "status": status
     }
 
-    Path(json_filename).write_text(
-        json.dumps(report_data, indent=4, ensure_ascii=False),
-        encoding="utf-8"
-    )
-    print(f"Report exported to {json_filename}")
+    try:
+        report_path.write_text(
+            json.dumps(report_data, indent=4, ensure_ascii=False),
+            encoding="utf-8"
+        )
+        print(f"Report exported to {report_path}")
+    except (PermissionError, OSError) as e:
+        print(f"Error: Could not write JSON report to {report_path}. {e}")
 
 
 # ===================== MAIN =====================
 def main() -> None:
     """
-    Main entry point for the Hash Checker tool.
+    Main entry point for the Hash Checker tool (CLI version).
     """
-    print("Welcome to the Hash Checker Tool")
+    parser = argparse.ArgumentParser(
+        description="Calculate and verify file hashes using multiple algorithms.",
+        epilog="""
+Examples:
+  %(prog)s firmware.bin -a sha256
+  %(prog)s firmware.bin -a sha256 -e 5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8
+  %(prog)s firmware.bin -a md5 -o ./reports
+        """,
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
 
-    user_input = input("Enter the file path: ").strip()
-    if not user_input:
-        print("Status: No file path provided.")
-        return
+    parser.add_argument(
+        "file",
+        help="Path to the file to hash"
+    )
 
-    file_path = Path(user_input)
+    parser.add_argument(
+        "-a", "--algorithm",
+        choices=SUPPORTED_ALGORITHMS,
+        default="sha256",
+        help=f"Hashing algorithm to use. Choices: {', '.join(SUPPORTED_ALGORITHMS)} (default: sha256)"
+    )
+
+    parser.add_argument(
+        "-e", "--expected",
+        help="Expected hash value to compare against"
+    )
+
+    parser.add_argument(
+        "-o", "--output",
+        help="Directory to save reports (default: current directory)"
+    )
+
+    parser.add_argument(
+        "-q", "--quiet",
+        action="store_true",
+        help="Suppress all output except errors and report messages"
+    )
+
+    parser.add_argument(
+        "-v", "--verbose",
+        action="store_true",
+        help="Print detailed progress during processing"
+    )
+
+    args = parser.parse_args()
+
+    # Validate file path
+    file_path = Path(args.file)
     if not file_path.exists():
-        print(f"Error: file '{file_path}' not found.")
+        print(f"Error: File '{args.file}' not found.")
         return
 
     if not file_path.is_file():
-        print(f"Error: '{file_path}' is a directory, not a file.")
+        print(f"Error: '{args.file}' is a directory, not a file.")
         return
 
-    print("Choose hash algorithm:\n1. MD5\n2. SHA1\n3. SHA256\n4. SHA512")
-    algorithm_num = input("Choose an option (1-4): ").strip()
+    # Determine output directory
+    output_dir = Path(args.output) if args.output else Path.cwd()
 
-    if algorithm_num not in SUPPORTED_ALGORITHMS:
-        print("Error: Invalid algorithm selection. Please choose a number between 1 and 4.")
+    # Create output directory if it doesn't exist
+    try:
+        output_dir.mkdir(parents=True, exist_ok=True)
+    except (PermissionError, OSError) as e:
+        print(f"Error: Could not create output directory '{output_dir}'. {e}")
         return
 
-    algorithm = SUPPORTED_ALGORITHMS[algorithm_num]
+    # Calculate hash
+    if not args.quiet and args.verbose:
+        print(f"Calculating {args.algorithm.upper()} hash for {file_path}...")
 
     try:
-        calculated = calculate_hash(file_path, algorithm)
+        calculated = calculate_hash(file_path, args.algorithm)
     except (PermissionError, OSError) as e:
         print(f"Error reading file: {e}")
         return
 
-    expected = input("Enter the hash to compare: ").strip()
-    if not expected:
-        print("Status: No hash provided for comparison.")
-        return
+    if not args.quiet:
+        print(f"Calculated hash: {calculated}")
 
-    status = "Hashes Match" if compare_hashes(expected, calculated) else "Hashes Mismatch"
+    # Determine comparison status
+    if not args.expected:
+        status = "No Expected Hash Provided"
+        if not args.quiet:
+            print("No expected hash provided for comparison.")
+    elif compare_hashes(args.expected, calculated):
+        status = "Hashes Match"
+        if not args.quiet:
+            print("Comparison: Hashes Match")
+    else:
+        status = "Hashes Mismatch"
+        if not args.quiet:
+            print("Comparison: Hashes Mismatch")
+
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    report = build_report(file_path.name, algorithm, calculated, expected, status, generated_at)
-    print(report)
+    # Build report
+    report = build_report(
+        file_path.name,
+        args.algorithm,
+        calculated,
+        args.expected or "N/A",
+        status,
+        generated_at
+    )
 
-    export_report_txt(report, file_path.name)
-    export_report_json(file_path.name, algorithm, calculated, expected, status, generated_at)
+    if not args.quiet:
+        print(report)
+
+    # Export reports
+    export_report_txt(report, file_path.name, output_dir)
+    export_report_json(
+        file_path.name,
+        args.algorithm,
+        calculated,
+        args.expected or "N/A",
+        status,
+        generated_at,
+        output_dir
+    )
+
+    if not args.quiet:
+        print(f"\nReports saved to: {output_dir}")
 
 
 if __name__ == "__main__":
