@@ -71,9 +71,10 @@ python hash_checker.py firmware.bin --output ./reports
 | `file` | Path to the file to hash. |
 | `-a`, `--algorithm` | Hashing algorithm: `md5`, `sha1`, `sha256`, or `sha512`. Default: `sha256`. |
 | `-e`, `--expected` | Expected hash value to compare against. |
+| `-c`, `--chunk-size` | Chunk size in bytes (default: 4096, range: 512-1048576). |
 | `-o`, `--output` | Directory where reports will be saved. Default: current directory. |
-| `-v`, `--verbose` | Display detailed processing progress. |
 | `-q`, `--quiet` | Minimize console output. |
+| `-v`, `--verbose` | Display detailed processing progress. |
 | `-h`, `--help` | Display the help message and exit. |
 
 ---
@@ -276,7 +277,7 @@ hash-checker/
 
 ## Current Version
 
-**v1.2.0**
+**v1.3.0**
 
 ---
 
