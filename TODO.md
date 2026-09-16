@@ -1,6 +1,8 @@
 # Hash Checker Roadmap
 
-This document outlines the planned improvements and future roadmap for **Hash Checker**. The current release (**v1.0.0**) supports multiple hashing algorithms, hash verification, and report generation in both TXT and JSON formats. The following items are planned for future releases.
+This document outlines the planned improvements and future roadmap for **Hash Checker**. The current release (**v1.0.0**) supports multiple hashing algorithms, hash verification, TXT and JSON report generation, and includes 16 unit tests.
+
+The following items are planned for future releases.
 
 ---
 
@@ -20,6 +22,7 @@ These improvements focus on accuracy, reliability, and maintainability.
 These features will improve flexibility and usability.
 
 * [✓] Add command-line argument support using `argparse`.
+* [✓] Add unit tests covering core functionality (16 tests).
 * [ ] Support batch verification of multiple files.
 * [ ] Improve report metadata with additional verification details.
 * [ ] Allow users to choose custom output locations for generated reports.
@@ -52,7 +55,7 @@ Larger features planned for future major versions.
 
 | Version                  | Status     |
 | ------------------------ | ---------- |
-| **Current Release**      | **v1.3.0** |
+| **Current Release**      | **v1.3.1** |
 | **Next Planned Release** | **v1.4.0** |
 
 ---

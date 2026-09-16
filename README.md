@@ -4,33 +4,39 @@ A lightweight Python tool for calculating and verifying file hashes, and generat
 
 Built with Python's standard library, with a focus on **reliability, memory efficiency, maintainability, and file integrity verification**.
 
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python\&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Tests](https://img.shields.io/badge/Tests-16%20Passed-brightgreen)
+![Version](https://img.shields.io/badge/Version-1.3.1-orange)
+
 ---
 
 ## Features
 
-- Calculate file hashes using MD5, SHA-1, SHA-256, and SHA-512.
-- Read files in chunks for memory-efficient processing.
-- Compare calculated hashes against an expected value.
-- Generate formatted TXT reports.
-- Export structured JSON reports.
-- Timestamped report filenames.
-- Configurable output directory.
-- Command-line interface (CLI) powered by `argparse`.
-- Quiet and verbose execution modes.
-- Continue safely when file or output errors occur.
-- Uses only Python's standard library.
+* Calculate file hashes using MD5, SHA-1, SHA-256, and SHA-512
+* Read files in chunks for memory-efficient processing
+* Compare calculated hashes against an expected value
+* Generate formatted TXT reports
+* Export structured JSON reports
+* Generate timestamped report filenames
+* Configurable output directory
+* Command-line interface (CLI) powered by `argparse`
+* Quiet and verbose execution modes
+* Continue safely when file or output errors occur
+* 16 unit tests covering core functionality
+* Uses only Python's standard library
 
 ---
 
 ## Installation
 
-### 1. Clone the repository
+### Clone the Repository
 
 ```bash
 git clone https://github.com/ali-ahmed-dev/hash-checker.git
 ```
 
-### 2. Navigate to the project directory
+### Navigate to the Project Directory
 
 ```bash
 cd hash-checker
@@ -44,19 +50,19 @@ No external Python packages are required.
 
 The tool accepts a **file path** followed by optional command-line arguments.
 
-### Calculate a file hash
+### Calculate a File Hash
 
 ```bash
 python hash_checker.py firmware.bin
 ```
 
-### Verify a hash
+### Verify a Hash
 
 ```bash
 python hash_checker.py firmware.bin --algorithm sha256 --expected e3b0c44298fc1c149afb...
 ```
 
-### Save reports to a custom directory
+### Save Reports to a Custom Directory
 
 ```bash
 python hash_checker.py firmware.bin --output ./reports
@@ -66,52 +72,52 @@ python hash_checker.py firmware.bin --output ./reports
 
 ## Command-Line Options
 
-| Option | Description |
-|--------|-------------|
-| `file` | Path to the file to hash. |
-| `-a`, `--algorithm` | Hashing algorithm: `md5`, `sha1`, `sha256`, or `sha512`. Default: `sha256`. |
-| `-e`, `--expected` | Expected hash value to compare against. |
-| `-c`, `--chunk-size` | Chunk size in bytes (default: 4096, range: 512-1048576). |
-| `-o`, `--output` | Directory where reports will be saved. Default: current directory. |
-| `-q`, `--quiet` | Minimize console output. |
-| `-v`, `--verbose` | Display detailed processing progress. |
-| `-h`, `--help` | Display the help message and exit. |
+| Option               | Description                                                                |
+| -------------------- | -------------------------------------------------------------------------- |
+| `file`               | Path to the file to hash                                                   |
+| `-a`, `--algorithm`  | Hashing algorithm: `md5`, `sha1`, `sha256`, or `sha512`. Default: `sha256` |
+| `-e`, `--expected`   | Expected hash value to compare against                                     |
+| `-c`, `--chunk-size` | Chunk size in bytes. Default: 4096, range: 512–1048576                     |
+| `-o`, `--output`     | Directory where reports will be saved. Default: current directory          |
+| `-q`, `--quiet`      | Minimize console output                                                    |
+| `-v`, `--verbose`    | Display detailed processing progress                                       |
+| `-h`, `--help`       | Display the help message and exit                                          |
 
 ---
 
 ## Examples
 
-### Calculate a hash
+### Calculate a Hash
 
 ```bash
 python hash_checker.py firmware.bin
 ```
 
-### Verify against an expected SHA-256 hash
+### Verify Against an Expected SHA-256 Hash
 
 ```bash
 python hash_checker.py firmware.bin -a sha256 -e e3b0c44298fc1c149afb...
 ```
 
-### Use a custom output directory
+### Use a Custom Output Directory
 
 ```bash
 python hash_checker.py firmware.bin -o ./reports
 ```
 
-### Use quiet mode
+### Use Quiet Mode
 
 ```bash
 python hash_checker.py firmware.bin --quiet
 ```
 
-### Use verbose mode
+### Use Verbose Mode
 
 ```bash
 python hash_checker.py firmware.bin --verbose
 ```
 
-### Display available options
+### Display Help
 
 ```bash
 python hash_checker.py --help
@@ -125,33 +131,33 @@ The tool processes the selected file in binary mode and calculates its hash incr
 
 ```text
 Input File
-     │
-     ▼
+     |
+     v
 Validate File
-     │
-     ▼
+     |
+     v
 Select Algorithm
-     │
-     ▼
+     |
+     v
 Read File in Chunks
-     │
-     ▼
+     |
+     v
 Calculate Hash
-     │
-     ├── No Expected Hash
-     │
-     └── Expected Hash
-              │
-              ▼
+     |
+     +-- No Expected Hash
+     |
+     +-- Expected Hash
+              |
+              v
         Compare Hashes
-              │
-              ├── Match
-              └── Mismatch
-              │
-              ▼
+              |
+              +-- Match
+              +-- Mismatch
+              |
+              v
         Generate Reports
-           ├── TXT
-           └── JSON
+           +-- TXT
+           +-- JSON
 ```
 
 ---
@@ -160,25 +166,25 @@ Calculate Hash
 
 Hash Checker processes files in fixed-size chunks instead of loading the entire file into memory.
 
-The current implementation uses a default chunk size of **4096 bytes**.
+The default chunk size is **4096 bytes**.
 
 ```text
 Large File
-    │
-    ▼
+    |
+    v
 Read Chunk
-    │
-    ▼
+    |
+    v
 Update Hash
-    │
-    ▼
+    |
+    v
 Read Next Chunk
-    │
-    ▼
+    |
+    v
 Continue Until EOF
 ```
 
-This allows large files to be processed with memory usage that does not grow with the complete file size.
+This allows large files to be processed without memory usage growing with the complete file size.
 
 ---
 
@@ -228,7 +234,7 @@ Expected    : e3b0c44298fc1c149afb...
 
 ### JSON Report
 
-Generates structured analysis data suitable for further processing and future automation.
+Generates structured data suitable for further processing and automation.
 
 ```json
 {
@@ -243,41 +249,79 @@ Generates structured analysis data suitable for further processing and future au
 
 ---
 
+## Testing
+
+The project includes **16 automated unit tests** using Python's built-in `unittest` framework.
+
+The tests cover:
+
+* Hash calculation (MD5, SHA-256, known content)
+* Same and different content
+* Unsupported algorithm errors
+* Small chunk size handling
+* Hash comparison (case-insensitive, whitespace-trimmed)
+* Different hashes
+* Report structure validation
+* TXT export
+* JSON export
+* Default output directory handling
+
+### Run Tests
+
+```bash
+python -m unittest discover -s tests -t . -v
+```
+
+### Current Result
+
+```text
+Ran 16 tests in 0.080s
+
+OK
+```
+
+---
+
 ## Project Structure
 
 ```text
 hash-checker/
-│
-├── hash_checker.py
-├── README.md
-├── LICENSE
-└── .gitignore
+|
++-- hash_checker.py
++-- tests/
+|   +-- __init__.py
+|   +-- test_hash_checker.py
++-- README.md
++-- TODO.md
++-- LICENSE
++-- .gitignore
 ```
 
 ---
 
 ## Technologies
 
-- **Python 3**
-- **argparse** — command-line interface
-- **hashlib** — hash calculation
-- **pathlib** — file and directory handling
-- **json** — structured report generation
-- **datetime** — report timestamps
+* **Python 3** — Core language
+* **argparse** — Command-line interface
+* **hashlib** — Hash calculation
+* **pathlib** — File and directory handling
+* **json** — Structured report generation
+* **datetime** — Report timestamps
+* **unittest** — Testing framework
 
 ---
 
 ## Requirements
 
-- Python 3.x
-- No external dependencies
-- Uses Python Standard Library only
+* Python 3.x
+* No external dependencies
+* Python Standard Library only
 
 ---
 
 ## Current Version
 
-**v1.3.0**
+**v1.3.1**
 
 ---
 
@@ -287,34 +331,31 @@ The project started as a simple file hashing script and gradually evolved into a
 
 Major improvements include:
 
-- Multiple hashing algorithm support
-- Chunk-based file processing
-- Expected hash verification
-- TXT report generation
-- JSON report generation
-- Configurable output directory
-- Improved error handling
-- Command-line interface
-- Quiet and verbose execution modes
-
-The project continues to evolve alongside the author's development in **Python, algorithms, web development, Linux, networking, and cybersecurity**.
+* Multiple hashing algorithm support
+* Chunk-based file processing
+* Expected hash verification
+* TXT report generation
+* JSON report generation
+* Configurable output directory
+* Improved error handling
+* Command-line interface
+* Quiet and verbose execution modes
+* 16 unit tests covering core functionality
 
 ---
 
 ## Future Development
 
-The project will evolve gradually as new requirements, ideas, and skills emerge.
-
 Potential future improvements include:
 
-- Multiple file verification
-- Recursive directory scanning
-- Batch hash verification
-- Colorized terminal output
-- CSV report generation
-- Additional file integrity capabilities
+* [ ] Multiple file verification
+* [ ] Recursive directory scanning
+* [ ] Batch hash verification
+* [ ] Colorized terminal output
+* [ ] CSV report generation
+* [ ] Additional file integrity capabilities
 
-> These are long-term ideas rather than a fixed roadmap. Features will be added progressively as the project matures.
+These are long-term ideas rather than a fixed roadmap. Features will be added progressively as the project evolves.
 
 ---
 
@@ -342,5 +383,4 @@ See the [LICENSE](LICENSE) file for details.
 
 **Ali Ahmed**
 
-GitHub:  
-https://github.com/ali-ahmed-dev
+GitHub: [ali-ahmed-dev](https://github.com/ali-ahmed-dev)

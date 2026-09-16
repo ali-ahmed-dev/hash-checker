@@ -1,12 +1,28 @@
-# Generated reports
-*_report.txt
-*_report.json
-
 # Python cache
 __pycache__/
 *.py[cod]
+*$py.class
 
 # Virtual environments
 .venv/
 venv/
 env/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Test cache
+.pytest_cache/
+
+# Logs
+*.log
+
+# Generated reports
+*_report.txt
+*_report.json
+reports/
