@@ -7,7 +7,8 @@ Built with Python's standard library, with a focus on **reliability, memory effi
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python\&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Tests](https://img.shields.io/badge/Tests-16%20Passed-brightgreen)
-![Version](https://img.shields.io/badge/Version-1.3.1-orange)
+![CI](https://github.com/ali-ahmed-dev/hash-checker/actions/workflows/test.yml/badge.svg)
+![Version](https://img.shields.io/badge/Version-1.3.2-orange)
 
 ---
 
@@ -24,6 +25,7 @@ Built with Python's standard library, with a focus on **reliability, memory effi
 * Quiet and verbose execution modes
 * Continue safely when file or output errors occur
 * 16 unit tests covering core functionality
+* Automated testing via GitHub Actions (Python 3.8 → 3.13)
 * Uses only Python's standard library
 
 ---
@@ -275,9 +277,30 @@ python -m unittest discover -s tests -t . -v
 ### Current Result
 
 ```text
-Ran 16 tests in 0.080s
+Ran 16 tests in 0.060s
 
 OK
+```
+
+---
+
+## Continuous Integration
+
+Tests are automatically run on every push and pull request to `main` via **GitHub Actions**.
+
+The workflow tests the project against six Python versions:
+
+* Python 3.8
+* Python 3.9
+* Python 3.10
+* Python 3.11
+* Python 3.12
+* Python 3.13
+
+The workflow file is located at:
+
+```text
+.github/workflows/test.yml
 ```
 
 ---
@@ -287,6 +310,9 @@ OK
 ```text
 hash-checker/
 |
++-- .github/
+|   +-- workflows/
+|       +-- test.yml
 +-- hash_checker.py
 +-- tests/
 |   +-- __init__.py
@@ -308,6 +334,7 @@ hash-checker/
 * **json** — Structured report generation
 * **datetime** — Report timestamps
 * **unittest** — Testing framework
+* **GitHub Actions** — Continuous integration
 
 ---
 
@@ -321,7 +348,7 @@ hash-checker/
 
 ## Current Version
 
-**v1.3.1**
+**v1.3.2**
 
 ---
 
@@ -341,6 +368,7 @@ Major improvements include:
 * Command-line interface
 * Quiet and verbose execution modes
 * 16 unit tests covering core functionality
+* Automated testing via GitHub Actions
 
 ---
 

@@ -2,6 +2,7 @@
 Hash Checker - A tool for calculating and verifying file hashes.
 """
 
+from __future__ import annotations
 from datetime import datetime
 from pathlib import Path
 import argparse
