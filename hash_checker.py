@@ -244,7 +244,7 @@ Examples:
     parser.add_argument(
         "--version",
         action="version",
-        version="Hash Checker v1.3.1"
+        version="Hash Checker v1.3.3"
     )
 
     return parser

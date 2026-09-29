@@ -24,6 +24,7 @@ These features will improve flexibility and usability.
 * [✓] Add command-line argument support using `argparse`.
 * [✓] Add unit tests covering core functionality (16 tests).
 * [✓] Add automated testing via GitHub Actions.
+* [✓] Add pytest support with conftest.py and pytest.ini.
 * [ ] Support batch verification of multiple files.
 * [ ] Improve report metadata with additional verification details.
 * [ ] Allow users to choose custom output locations for generated reports.
@@ -56,7 +57,7 @@ Larger features planned for future major versions.
 
 | Version                  | Status     |
 | ------------------------ | ---------- |
-| **Current Release**      | **v1.3.2** |
+| **Current Release**      | **v1.3.3** |
 | **Next Planned Release** | **v1.4.0** |
 
 ---

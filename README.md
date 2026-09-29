@@ -4,11 +4,11 @@ A lightweight Python tool for calculating and verifying file hashes, and generat
 
 Built with Python's standard library, with a focus on **reliability, memory efficiency, maintainability, and file integrity verification**.
 
-![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python\&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Tests](https://img.shields.io/badge/Tests-16%20Passed-brightgreen)
 ![CI](https://github.com/ali-ahmed-dev/hash-checker/actions/workflows/test.yml/badge.svg)
-![Version](https://img.shields.io/badge/Version-1.3.2-orange)
+![Version](https://img.shields.io/badge/Version-1.3.3-orange)
 
 ---
 
@@ -36,7 +36,7 @@ Built with Python's standard library, with a focus on **reliability, memory effi
 
 ```bash
 git clone https://github.com/ali-ahmed-dev/hash-checker.git
-```
+````
 
 ### Navigate to the Project Directory
 
@@ -270,16 +270,31 @@ The tests cover:
 
 ### Run Tests
 
+**Option 1: Using unittest (built-in)**
+
 ```bash
 python -m unittest discover -s tests -t . -v
 ```
 
+**Option 2: Using pytest (recommended)**
+
+```bash
+pip install pytest
+pytest tests/ -v
+```
+
 ### Current Result
 
+Both methods pass all 16 tests:
+
 ```text
-Ran 16 tests in 0.060s
+Ran 16 tests in 0.163s
 
 OK
+```
+
+```text
+16 passed in 0.27s
 ```
 
 ---
@@ -313,10 +328,12 @@ hash-checker/
 +-- .github/
 |   +-- workflows/
 |       +-- test.yml
-+-- hash_checker.py
 +-- tests/
 |   +-- __init__.py
+|   +-- conftest.py
 |   +-- test_hash_checker.py
++-- hash_checker.py
++-- pytest.ini
 +-- README.md
 +-- TODO.md
 +-- LICENSE
@@ -333,7 +350,8 @@ hash-checker/
 * **pathlib** — File and directory handling
 * **json** — Structured report generation
 * **datetime** — Report timestamps
-* **unittest** — Testing framework
+* **unittest** — Primary testing framework
+* **pytest** — Alternative test runner
 * **GitHub Actions** — Continuous integration
 
 ---
@@ -348,7 +366,7 @@ hash-checker/
 
 ## Current Version
 
-**v1.3.2**
+**v1.3.3**
 
 ---
 
@@ -369,6 +387,7 @@ Major improvements include:
 * Quiet and verbose execution modes
 * 16 unit tests covering core functionality
 * Automated testing via GitHub Actions
+* pytest support with `conftest.py` and `pytest.ini`
 
 ---
 
